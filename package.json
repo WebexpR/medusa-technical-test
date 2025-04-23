@@ -1,0 +1,67 @@
+{
+  "name": "medusa-technical-test",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Medusa",
+  "scripts": {
+    "clean": "rimraf dist",
+    "build": "cross-env yarn clean && yarn build:server",
+    "build:server": "cross-env yarn clean && tsc -p tsconfig.server.json",
+    "watch": "cross-env tsc --watch",
+    "start": "cross-env medusa start",
+    "start:custom": "cross-env yarn build && node --preserve-symlinks --trace-warnings index.js",
+    "dev": "cross-env yarn build:server && medusa develop",
+    "db:migrate": "medusa migrations run",
+    "db:revert": "medusa migrations revert",
+    "test": "npm run build && cross-env vitest"
+  },
+  "dependencies": {
+    "@medusajs/admin": "^7.1.18",
+    "@medusajs/cache-inmemory": "^1.8.11",
+    "@medusajs/cache-redis": "^1.9.2",
+    "@medusajs/event-bus-local": "1.9.9",
+    "@medusajs/event-bus-redis": "^1.8.14",
+    "@medusajs/file-local": "^1.0.4",
+    "@medusajs/medusa": "1.20.11",
+    "@tanstack/react-query": "4.36.1",
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "medusa-fulfillment-manual": "^1.1.41",
+    "medusa-interfaces": "^1.3.10",
+    "medusa-payment-manual": "^1.0.25",
+    "medusa-payment-stripe": "^6.0.11",
+    "prism-react-renderer": "^2.4.1",
+    "typeorm": "^0.3.22"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.26.4",
+    "@babel/core": "^7.26.7",
+    "@babel/preset-typescript": "^7.26.0",
+    "@medusajs/medusa-cli": "^1.3.23",
+    "@stdlib/number-float64-base-normalize": "0.0.8",
+    "@types/express": "^4.17.21",
+    "@types/mime": "1.3.5",
+    "@types/node": "^20.17.16",
+    "@types/supertest": "^6.0.3",
+    "babel-preset-medusa-package": "^1.1.20",
+    "concurrently": "^9.1.2",
+    "cross-env": "^7.0.3",
+    "eslint": "^6.8.0",
+    "get-port": "^7.1.0",
+    "rimraf": "^4",
+    "slugify": "^1.6.6",
+    "supertest": "^7.1.0",
+    "ts-loader": "^9.2.6",
+    "typescript": "^5.7.3",
+    "vitest": "^3.1.1"
+  },
+  "resolutions": {
+    "glob": "^9"
+  },
+  "engines": {
+    "node": "^18.0.0 || ^20.0.0 || >=22.0.0"
+  },
+  "packageManager": "yarn@1.22.22"
+}

@@ -1,0 +1,24 @@
+version: '3'
+name: medusa-technical-test
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=medusa_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - db_data_medusa:/var/lib/postgresql/data:rw
+      - ./db/init:/docker-entrypoint-initdb.d
+    networks:
+      - app-network
+
+volumes:
+  db_data_medusa:
+
+
+networks:
+  app-network:
+    driver: 'bridge'
