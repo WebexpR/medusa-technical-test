@@ -1,118 +1,118 @@
-<p align="center">
-  <h1>Medusa Technical Test</h1>
-</p>
+# Medusa Technical Test
 
 ## Overview
 
-This is a technical test for Medusa, an open-source composable commerce platform. The test **focuses on building a wishlist feature** using Medusa's architecture patterns.
+This technical test focuses on building a wishlist feature using Medusa's architecture patterns. A wishlist allows customers to save products they're interested in for later.
 
+## Prerequisites
 
-## Installation
+- Docker and Docker Compose installed
+- Node.js and Yarn package manager
+- Basic understanding of TypeScript and TypeORM
 
-First of all, you need to install docker and docker-compose.
+## Setup Instructions
 
-Then, you need to run the project with docker-compose.
+1. Start the development environment:
+   ```bash
+   # For Docker v27 and below
+   docker-compose up -d
 
-```bash
-docker-compose up -d # Docker v27<=
-```
+   # For Docker v28 and above
+   docker compose up -d
+   ```
 
-Or 
-```bash
-docker compose up -d # Docker v28>=
-```
+2. Install project dependencies:
+   ```bash
+   yarn install
+   ```
 
-Then, you need to install the dependencies.
-```bash
-yarn install
-```
+## Project Structure
 
-## Requirements
+The project follows Medusa's architecture patterns with the following key components:
 
-As a candidate, you should implement a complete wishlist feature by following these requirements.
-A wishlist is a list of products that a customer wants to save for later.
+- `src/models/`: Database models
+- `src/repositories/`: Data access layer
+- `src/services/`: Business logic
+- `src/api/`: API endpoints
+- `src/migrations/`: Database migrations
 
-> **Note**
-> 🚨 All the files must be written in TypeScript.
+## Implementation Requirements
 
-### 1. Models
+### 1. Database Models
 
-Each models should extend from the `BaseEntity` class imported from `@medusajs/medusa`, to make sure we have `id`, `created_at`, `updated_at` default fields.
+#### Pre-existing Models
+- `customer.ts`: Already has a one-to-many relationship with Wishlist
+- `product.ts`: Already has a one-to-many relationship with WishlistItem
+- ⚠️ These files should not be modified
 
-> Please refer to the `src/models/MODELS_README.md` file for more information on the implementation of the models.
+#### New Models to Implement
 
-#### Wishlist Model
-- Create a model called `Wishlist` with the file name `wishlist.ts`
-- Each wishlist should have:
-  - A title of type `text`
-  - A `customer_id` field of type `text`
-  - A list of `WishlistItem` (one-to-many relationship), named `items`
-- We should use the `BeforeInsert` decorator to generate the `id` field using the `generateEntityId` function imported from `@medusajs/utils`
-- The prefix is up to you
+##### Wishlist Model (`wishlist.ts`)
+- Extend `BaseEntity` from `@medusajs/medusa`
+- Required fields:
+  - `title`: text
+  - `customer_id`: Many-to-one relationship with Customer
+  - `items`: One-to-many relationship with WishlistItem
+- Use `@BeforeInsert` decorator with `generateEntityId` for ID generation
 
-#### WishlistItem Model
-- Create a model called `WishlistItem` with the file name `wishlist-item.ts`
-- Each wishlist item should have:
-  - A relation to a `Wishlist` (many-to-one relationship)
-  - A `product_id` field that relates to the Medusa `Product` model
-  - You can import the `Product` model from `@medusajs/medusa` package
-- We should use the `BeforeInsert` decorator to generate the `id` field using the `generateEntityId` function imported from `@medusajs/utils`
-- The prefix is up to you
+##### WishlistItem Model (`wishlist-item.ts`)
+- Extend `BaseEntity` from `@medusajs/medusa`
+- Required fields:
+  - `wishlist_id`: Many-to-one relationship with Wishlist
+  - `product_id`: Many-to-one relationship with Product
+- Use `@BeforeInsert` decorator with `generateEntityId` for ID generation
 
+### 2. Database Migration
 
-⚠️ Don't forget to add the migrations for the new models inside the `src/migrations/1744797048433-add-wishlist-schema.ts` file.
-Migrations must be written manually without using the TypeORM CLI generation tools.
+Create a migration file at `src/migrations/1744797048433-add-wishlist-schema.ts` to:
+- Create the wishlist table
+- Create the wishlist_item table
+- Set up foreign key relationships
 
-### 2. Repositories
+### 3. Repositories
 
-> Please refer to the `src/repositories/REPOS_README.md` file for more information.
+Implement two repositories using the `src/repositories/REPOS_README.md` file.
+- `WishlistRepository`: Data access layer for Wishlist model
+- `WishlistItemRepository`: Data access layer for WishlistItem model
 
-- Create a repository for both models:
-  - `WishlistRepository`
-  - `WishlistItemRepository`
-- These repositories should function as a Data Access Layer (DAL) for the models
+### 4. Service Layer
 
-
-## Test Your Implementation
-The Models and Repositories part can be tested by running the `yarn test` command, for the next parts, you'll be on your own.
-
---- 
-
-### 3. Services
-
-> Please refer to the `src/services/SERVICES_README.md` file for more information.
-
-Implement a service that provides the following functionality:
-- `listAndCount`: Get a list of wishlists
+Implement a service called `WishlistService` with the following methods:
+- `listAndCount`: Retrieve paginated wishlists
 - `retrieve`: Get a single wishlist by ID
 - `create`: Create a new wishlist with items
 
-### 4. API Routes
+### 5. API Endpoints
 
-> Please refer to the `src/api/API_README.md` file for more information.
+Create REST endpoints for:
+- `GET /wishlists`: List all wishlists
+- `GET /wishlists/:id`: Get a single wishlist
+- `POST /wishlists`: Create a new wishlist with items
 
-Create API routes that allow users to:
-- List all wishlists
-- Retrieve a single wishlist
-- Create a new wishlist with items
+## Testing
 
-### Testing
+1. Run the test suite:
+   ```bash
+   yarn test
+   ```
 
-- Ensure all unit tests in the project are passing after your implementation
-- Do not modify the existing tests, make your implementation compatible with them
+2. Ensure all tests pass without modifying existing test files
 
 ## Evaluation Criteria
 
-Your submission will be evaluated based on:
+Your implementation will be evaluated based on:
 - Code quality and organization
 - Proper implementation of Medusa's architectural patterns
-- Feature completeness according to requirements
-- All tests passing
-- Proper implementation of error handling
+- Feature completeness
+- Test coverage
+- Error handling
+- Documentation (JSDoc comments for functions and classes)
 
-## Submission
+## Development Guidelines
 
-When you've completed the implementation, please follow the submission instructions provided separately.
-
-Good luck!
-
+- All files must be written in TypeScript
+- Use kebab-case for file names (e.g., `wishlist.ts`, `wishlist-item.ts`)
+- Follow Medusa's architectural patterns
+- Write clear JSDoc comments for functions and classes
+- Implement proper error handling
+- Ensure all tests pass
