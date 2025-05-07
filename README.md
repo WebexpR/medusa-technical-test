@@ -51,15 +51,18 @@ The project follows Medusa's architecture patterns with the following key compon
 - Extend `BaseEntity` from `@medusajs/medusa`
 - Required fields:
   - `title`: text
-  - `customer_id`: Many-to-one relationship with Customer
-  - `items`: One-to-many relationship with WishlistItem
+  - `customer_id`: text
+  - `customer` : A Many-to-one relationship with `Customer` model
+  - `items`: One-to-many relationship with `WishlistItem` model
 - Use `@BeforeInsert` decorator with `generateEntityId` for ID generation
 
 ##### WishlistItem Model (`wishlist-item.ts`)
 - Extend `BaseEntity` from `@medusajs/medusa`
 - Required fields:
-  - `wishlist_id`: Many-to-one relationship with Wishlist
-  - `product_id`: Many-to-one relationship with Product
+  - `wishlist_id`: text
+  - `wishlist` : A Many-to-one relationship with `Wishlist` model
+  - `product_id`: text
+  - `product` : A Many-to-one relationship with `Product` model
 - Use `@BeforeInsert` decorator with `generateEntityId` for ID generation
 
 ### 2. Database Migration
