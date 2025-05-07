@@ -21,7 +21,7 @@ class PostService extends TransactionBaseService {
     this.postRepository_ = container.postRepository
   }
 
-  async listAndCount(): Promise<Post[]> {
+  async listAndCount(): Promise<[Post[], number]> {
     const postRepo = this.activeManager_.withRepository(
       this.postRepository_
     )

@@ -20,12 +20,6 @@ import {
 
 export const PostRepository = dataSource
   .getRepository(Post)
-  .extend({
-    customMethod(): void {
-      // TODO add custom implementation
-      return
-    },
-  })
 
 export default PostRepository
 ```
