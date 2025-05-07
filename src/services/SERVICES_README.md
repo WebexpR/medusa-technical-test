@@ -5,14 +5,14 @@ You may define custom services that will be registered on the global container b
 ```ts
 // src/services/my-custom.ts
 import { TransactionBaseService } from "@medusajs/medusa"
-import { Repository } from "typeorm"
+import { type Repository } from "typeorm"
 import { type Post } from "../models/post"
 
 type InjectedDependencies = {
   postRepository: Repository<Post>
 }
 
-class PostService extends TransactionBaseService {
+export default class PostService extends TransactionBaseService {
   protected postRepository_: Repository<Post>
 
   constructor(container: InjectedDependencies) {

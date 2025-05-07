@@ -28,15 +28,20 @@ export default PostRepository
 
 ```ts
 // src/services/post.ts
+import { TransactionBaseService } from "@medusajs/medusa"
+import { type Repository } from "typeorm"
+import { type Post } from "../models/post"
 
-import { PostRepository } from "../repositories/post"
+type InjectedDependencies = {
+  postRepository: Repository<Post>
+}
 
-class PostService extends TransactionBaseService {
-  protected postRepository_: typeof PostRepository
+export default class PostService extends TransactionBaseService {
+  protected postRepository_: Repository<Post>
 
   constructor(container) {
     super(container)
-    this.postRepository_ = container.postRepository
+    this.postRepository_ = container.postRepository // ✅ The container contains the repository that will be injected into the service and available to use
   }
 
   async list(): Promise<Post[]> {
